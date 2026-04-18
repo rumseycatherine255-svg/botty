@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>InSafeHands Cleaning Services</title>
+  <title>InSafeHands Sussex</title> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -57,11 +57,11 @@
     button {
       background: #0ea5e9;
       border: none;
-      padding: 12px 20px;
+      padding: 12px;
+      width: 100%;
       color: white;
       cursor: pointer;
       border-radius: 8px;
-      width: 100%;
       font-size: 16px;
     }
 
@@ -75,7 +75,7 @@
 
 <header>
   <h1>InSafeHands Sussex</h1>
-  <p> Established In 2026</p>
+  <p>Professional Cleaning Services</p>
 </header>
 
 <div class="container">
@@ -84,11 +84,14 @@
     <h2>Our Services</h2>
     <div class="services">
       <div class="service">🏠 House Cleaning</div>
+      <div class="service">✨ Deep Cleaning</div>
+      <div class="service">🏢 Office Cleaning</div>
+      <div class="service">🚪 End of Tenancy</div>
     </div>
   </div>
 
   <div class="card">
-    <h2>Send an Enquiry</h2>
+    <h2>Request a Cleaning Quote</h2>
 
     <input id="name" placeholder="Full Name">
     <input id="email" placeholder="Email">
@@ -104,21 +107,26 @@
 
 <script>
 async function send() {
-  const res = await fetch('/send-enquiry', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({
-      name: document.getElementById('name').value,
-      email: document.getElementById('email').value,
-      phone: document.getElementById('phone').value,
-      message: document.getElementById('message').value
-    })
-  });
+  try {
+    const res = await fetch('/send-enquiry', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        message: document.getElementById('message').value
+      })
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  document.getElementById('status').innerText =
-    data.success ? "✅ Enquiry sent!" : "❌ Failed: " + data.error;
+    document.getElementById('status').innerText =
+      data.success ? "✅ Sent successfully!" : "❌ Failed: " + data.error;
+
+  } catch (err) {
+    document.getElementById('status').innerText = "❌ Server error";
+  }
 }
 </script>
 
