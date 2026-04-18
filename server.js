@@ -1,62 +1,85 @@
 const express = require("express");
-const cors = require("cors");
 const path = require("path");
 const { Resend } = require("resend");
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
+/* EMAIL SETUP */
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// homepage
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
+/* STORAGE */
+let chats = {};
+let quotes = [];
 
-// enquiry route
-app.post("/send-enquiry", async (req, res) => {
-  const { name, email, phone, message } = req.body;
+/* ---------------- QUOTE (FIXED) ---------------- */
+app.post("/send-quote", async (req, res) => {
+  const { name, email, phone, address, message } = req.body;
 
-  console.log("📩 Incoming enquiry:", req.body);
-
-  if (!name || !email || !phone || !message) {
+  if (!name || !email || !phone || !address || !message) {
     return res.json({ success: false, error: "Missing fields" });
   }
 
   try {
-    const result = await resend.emails.send({
+    const response = await resend.emails.send({
       from: "InSafeHands <onboarding@resend.dev>",
-      to: process.env.EMAIL,
-      subject: "New Cleaning Enquiry",
+      to: process.env.EMAIL || "YOUR_EMAIL@gmail.com",
+      subject: "⚡ NEW QUOTE REQUEST",
       html: `
-        <h2>New Cleaning Enquiry</h2>
+        <h2>New Quote Request</h2>
         <p><b>Name:</b> ${name}</p>
         <p><b>Email:</b> ${email}</p>
         <p><b>Phone:</b> ${phone}</p>
-        <p><b>Message:</b><br>${message}</p>
+        <p><b>Address:</b> ${address}</p>
+        <p><b>Message:</b> ${message}</p>
       `
     });
 
-    console.log("📧 RESEND RESPONSE:", result);
+    console.log("EMAIL SENT:", response);
 
-    return res.json({ success: true });
+    quotes.push({ name, email, phone, address, message });
+
+    res.json({ success: true });
 
   } catch (err) {
-    console.log("❌ EMAIL ERROR FULL:");
-    console.log(err);
+    console.error("EMAIL FAILED:", err);
 
-    return res.json({
+    res.json({
       success: false,
       error: err.message
     });
   }
 });
 
+/* ---------------- CHAT ---------------- */
+app.post("/send-message", (req, res) => {
+  const { name, message } = req.body;
+
+  if (!name || !message) {
+    return res.json({ success: false, error: "Missing data" });
+  }
+
+  if (!chats[name]) chats[name] = [];
+
+  chats[name].push({
+    sender: "user",
+    message,
+    time: Date.now()
+  });
+
+  res.json({ success: true });
+});
+
+/* ---------------- DATA ---------------- */
+app.get("/data", (req, res) => {
+  res.json({ chats, quotes });
+});
+
+/* ---------------- SERVER ---------------- */
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log("🚀 Server running on", PORT);
+app.listen(PORT, () => {
+  console.log("🚀 Running on port", PORT);
 });
