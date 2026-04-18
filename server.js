@@ -8,49 +8,38 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Try to detect public folder safely
-const publicPath = path.join(__dirname, "public");
+// DO NOT use express.static (removes Railway conflicts)
 
-console.log("📁 Checking public folder...");
-console.log("Exists:", fs.existsSync(publicPath));
-
-if (fs.existsSync(publicPath)) {
-  console.log("Files:", fs.readdirSync(publicPath));
-} else {
-  console.log("⚠️ Public folder missing!");
-}
-
-// Serve static ONLY if it exists
-if (fs.existsSync(publicPath)) {
-  app.use(express.static(publicPath));
-}
-
-// Root route (SAFE fallback)
-app.get("/", (req, res) => {
-  const file = path.join(publicPath, "index.html");
-
-  if (fs.existsSync(file)) {
-    return res.sendFile(file);
-  }
-
-  // fallback so site NEVER crashes
-  res.send(`
-    <h1>InSafeHands Running</h1>
-    <p>⚠️ index.html not found in /public</p>
-  `);
-});
-
-// EMAIL SETUP
+// ENV
 const resend = new Resend(process.env.RESEND_API_KEY);
 const EMAIL = process.env.EMAIL;
+
+// Health check (IMPORTANT)
+app.get("/health", (req, res) => {
+  res.send("OK");
+});
+
+// ROOT ROUTE (FORCE FILE LOAD)
+app.get("/", (req, res) => {
+  const filePath = path.join(__dirname, "public", "index.html");
+
+  console.log("Trying file:", filePath);
+  console.log("Exists:", fs.existsSync(filePath));
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(500).send("index.html missing in public folder");
+  }
+
+  res.setHeader("Content-Type", "text/html");
+  res.sendFile(filePath);
+});
 
 // ENQUIRY ROUTE
 app.post("/send-enquiry", async (req, res) => {
   const { name, email, message } = req.body;
 
-  console.log("📩 New enquiry:", req.body);
+  console.log("📩 enquiry:", req.body);
 
   if (!name || !email || !message) {
     return res.json({ success: false, error: "Missing fields" });
@@ -60,12 +49,11 @@ app.post("/send-enquiry", async (req, res) => {
     await resend.emails.send({
       from: "InSafeHands <onboarding@resend.dev>",
       to: EMAIL,
-      subject: "New InSafeHands Enquiry",
+      subject: "New Enquiry",
       html: `
         <h2>New Enquiry</h2>
         <p><b>Name:</b> ${name}</p>
         <p><b>Email:</b> ${email}</p>
-        <hr>
         <p>${message}</p>
       `
     });
@@ -73,13 +61,14 @@ app.post("/send-enquiry", async (req, res) => {
     res.json({ success: true });
 
   } catch (err) {
-    console.error("❌ EMAIL ERROR:", err);
+    console.error(err);
     res.json({ success: false, error: err.message });
   }
 });
 
-const PORT = process.env.PORT || 3000;
+// IMPORTANT: bind to Railway properly
+const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
-  console.log("🚀 InSafeHands running on port", PORT);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log("🚀 Running on port", PORT);
 });
