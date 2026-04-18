@@ -12,6 +12,7 @@
       background: radial-gradient(circle at top left, #1e3a8a, #020617);
     }
 
+    /* 🔥 FIXED ADMIN BUTTON */
     #adminBtn {
       position: fixed;
       top: 15px;
@@ -24,10 +25,11 @@
       cursor: pointer;
       color: black;
       font-size: 14px;
+      z-index: 1000;
     }
 
     header {
-      padding: 60px 20px 20px;
+      padding: 80px 20px 20px; /* extra top space prevents overlap */
       text-align: center;
     }
 
@@ -124,13 +126,22 @@
       word-break: break-word;
     }
 
+    /* 📱 MOBILE FIXES */
     @media (max-width: 600px) {
       .title {
         font-size: 34px;
       }
 
       header {
-        padding: 50px 15px 10px;
+        padding: 90px 15px 10px; /* extra top space fixes overlap */
+      }
+
+      #adminBtn {
+        top: 10px;
+        right: 10px;
+        padding: 6px 10px;
+        font-size: 11px;
+        border-radius: 6px;
       }
 
       .container {
@@ -139,11 +150,6 @@
 
       .card {
         padding: 15px;
-      }
-
-      #adminBtn {
-        font-size: 12px;
-        padding: 8px 12px;
       }
     }
   </style>
@@ -228,11 +234,8 @@ async function sendQuote() {
 
   const data = await res.json();
 
-  if (data.success) {
-    alert("Quote sent ✔");
-  } else {
-    alert("ERROR: " + data.error);
-  }
+  if (data.success) alert("Quote sent ✔");
+  else alert("ERROR: " + data.error);
 }
 
 /* CHAT */
@@ -248,14 +251,11 @@ async function sendChat() {
 
   const data = await res.json();
 
-  if (data.success) {
-    alert("Message sent ✔");
-  } else {
-    alert("Failed to send");
-  }
+  if (data.success) alert("Message sent ✔");
+  else alert("Failed to send");
 }
 
-/* ADMIN DATA */
+/* ADMIN */
 async function loadData() {
   const res = await fetch("/data");
   const data = await res.json();
