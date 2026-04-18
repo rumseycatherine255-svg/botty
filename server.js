@@ -5,23 +5,26 @@ const { Resend } = require("resend");
 
 const app = express();
 
+// IMPORTANT MIDDLEWARE (this fixes your form issue)
 app.use(cors());
 app.use(express.json());
+
+// static files
 app.use(express.static(path.join(__dirname, "public")));
 
-// ENV
+// env
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// HOME
+// homepage
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// ENQUIRY
+// enquiry route
 app.post("/send-enquiry", async (req, res) => {
   const { name, email, phone, message } = req.body;
 
-  console.log("📩 Enquiry:", req.body);
+  console.log("📩 Incoming enquiry:", req.body);
 
   if (!name || !email || !phone || !message) {
     return res.json({ success: false, error: "Missing fields" });
@@ -31,9 +34,9 @@ app.post("/send-enquiry", async (req, res) => {
     await resend.emails.send({
       from: "InSafeHands <onboarding@resend.dev>",
       to: process.env.EMAIL,
-      subject: "New Enquiry - InSafeHands",
+      subject: "New Cleaning Enquiry",
       html: `
-        <h2>New Enquiry</h2>
+        <h2>New Cleaning Enquiry</h2>
         <p><b>Name:</b> ${name}</p>
         <p><b>Email:</b> ${email}</p>
         <p><b>Phone:</b> ${phone}</p>
@@ -49,7 +52,7 @@ app.post("/send-enquiry", async (req, res) => {
   }
 });
 
-// RAILWAY FIX
+// railway port fix
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, "0.0.0.0", () => {
