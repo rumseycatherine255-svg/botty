@@ -1,51 +1,126 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <title>InSafeHands</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-body{margin:0;font-family:Arial;background:#0b1220;color:#fff}
-header{background:#16a34a;padding:20px;text-align:center}
-.container{max-width:800px;margin:auto;padding:20px}
-form{background:#111827;padding:20px;border-radius:12px}
-input,textarea{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:none;background:#0b1220;color:#fff}
-button{width:100%;padding:12px;background:#22c55e;border:none;border-radius:8px}
+body {
+  margin:0;
+  font-family: Arial;
+  background:#0b1220;
+  color:white;
+}
+
+header {
+  background:#16a34a;
+  padding:20px;
+  text-align:center;
+}
+
+.hero {
+  padding:60px 20px;
+  text-align:center;
+  background: linear-gradient(#16a34a,#0b1220);
+}
+
+.container {
+  max-width:800px;
+  margin:auto;
+  padding:20px;
+}
+
+form {
+  background:#111827;
+  padding:20px;
+  border-radius:12px;
+}
+
+input, textarea {
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border:none;
+  border-radius:8px;
+  background:#0b1220;
+  color:white;
+}
+
+button {
+  width:100%;
+  padding:12px;
+  background:#22c55e;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover {
+  background:#16a34a;
+}
+
+.status {
+  text-align:center;
+  margin-top:10px;
+}
 </style>
+
 </head>
+
 <body>
 
 <header>
-<h2>InSafeHands</h2>
+  <h2>InSafeHands</h2>
 </header>
 
+<section class="hero">
+  <h1>Send an Enquiry</h1>
+  <p>We’ll respond as soon as possible</p>
+</section>
+
 <div class="container">
-<form id="f">
-<input name="name" placeholder="Name" required>
-<input name="email" placeholder="Email" required>
-<textarea name="message" placeholder="Message" required></textarea>
-<button>Send</button>
+
+<form id="form">
+  <input name="name" placeholder="Name" required>
+  <input name="email" placeholder="Email" required>
+  <textarea name="message" placeholder="Message" required></textarea>
+  <button type="submit">Send Enquiry</button>
+  <div class="status" id="status"></div>
 </form>
-<p id="s"></p>
+
 </div>
 
 <script>
-document.getElementById("f").addEventListener("submit", async e=>{
-e.preventDefault();
-const f=e.target;
-const data={
-name:f.name.value,
-email:f.email.value,
-message:f.message.value
-};
+const form = document.getElementById("form");
+const status = document.getElementById("status");
 
-const r=await fetch("/send-enquiry",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify(data)
-});
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-const j=await r.json();
-document.getElementById("s").innerText=j.success?"Sent!":"Failed";
+  status.textContent = "Sending...";
+
+  const data = {
+    name: form.name.value,
+    email: form.email.value,
+    message: form.message.value
+  };
+
+  try {
+    const res = await fetch("/send-enquiry", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(data)
+    });
+
+    const json = await res.json();
+
+    status.textContent = json.success ? "Sent!" : "Failed: " + json.error;
+
+  } catch (err) {
+    status.textContent = "Server error";
+  }
 });
 </script>
 
