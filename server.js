@@ -5,14 +5,12 @@ const { Resend } = require("resend");
 
 const app = express();
 
-// IMPORTANT MIDDLEWARE (this fixes your form issue)
+// middleware
 app.use(cors());
 app.use(express.json());
-
-// static files
 app.use(express.static(path.join(__dirname, "public")));
 
-// env
+// email service
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // homepage
@@ -24,7 +22,7 @@ app.get("/", (req, res) => {
 app.post("/send-enquiry", async (req, res) => {
   const { name, email, phone, message } = req.body;
 
-  console.log("📩 Incoming enquiry:", req.body);
+  console.log("📩 ENQUIRY RECEIVED:", req.body);
 
   if (!name || !email || !phone || !message) {
     return res.json({ success: false, error: "Missing fields" });
@@ -44,17 +42,17 @@ app.post("/send-enquiry", async (req, res) => {
       `
     });
 
-    res.json({ success: true });
+    return res.json({ success: true });
 
   } catch (err) {
-    console.log("EMAIL ERROR:", err);
-    res.json({ success: false, error: err.message });
+    console.log("❌ EMAIL ERROR:", err);
+    return res.json({ success: false, error: err.message });
   }
 });
 
-// railway port fix
+// railway port
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, "0.0.0.0", () => {
-  console.log("🚀 Running on", PORT);
+  console.log("🚀 Server running on", PORT);
 });
