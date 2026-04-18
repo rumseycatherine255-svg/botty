@@ -1,101 +1,127 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>InSafeHands Sussex</title>
+  <title>SPS Electrical</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       margin: 0;
       font-family: Arial;
+      background: radial-gradient(circle at top, #1e3a8a, #020617);
       color: white;
-      background: radial-gradient(circle at top left, #1e3a8a, #020617);
     }
 
-    /* 🔥 FIXED ADMIN BUTTON */
-    #adminBtn {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      background: linear-gradient(135deg, #facc15, #f59e0b);
-      border: none;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      color: black;
-      font-size: 14px;
-      z-index: 1000;
-    }
-
+    /* HEADER */
     header {
-      padding: 80px 20px 20px; /* extra top space prevents overlap */
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 60px 20px;
+      justify-content: center;
       text-align: center;
+      flex-wrap: wrap;
+    }
+
+    header img {
+      height: 90px;
     }
 
     .title {
-      font-size: 48px;
+      font-size: 50px;
       font-weight: bold;
-      word-break: break-word;
-    }
-
-    .title span {
       color: #22d3ee;
     }
 
     .subtitle {
-      margin-top: 10px;
-      font-size: 16px;
       color: #ccc;
+      font-size: 18px;
     }
 
+    /* ADMIN BUTTON (FIXED MOBILE) */
+    #adminBtn {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      background: linear-gradient(135deg, gold, orange);
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 12px;
+      z-index: 1000;
+    }
+
+    /* CONTAINER */
     .container {
       max-width: 900px;
       margin: auto;
-      padding: 15px;
+      padding: 20px;
     }
 
+    /* CARDS */
     .card {
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(15px);
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(12px);
+      padding: 25px;
+      margin: 25px 0;
       border-radius: 16px;
-      padding: 20px;
-      margin: 20px 0;
-      box-shadow: 0 0 40px rgba(0,0,0,0.4);
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
     }
+
+    h2 { margin-top: 0; }
 
     input, textarea {
       width: 100%;
       padding: 12px;
       margin: 8px 0;
       border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: transparent;
+      border: none;
+      background: #020617;
       color: white;
-      font-size: 16px;
+      font-size: 15px;
       box-sizing: border-box;
     }
 
-    textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-
     button {
-      display: block;
-      margin: 15px auto 0;
-      padding: 12px 20px;
-      border-radius: 10px;
+      width: 100%;
+      padding: 12px;
       border: none;
-      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      border-radius: 10px;
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
       color: white;
       font-weight: bold;
       cursor: pointer;
-      font-size: 16px;
-      width: 100%;
-      max-width: 250px;
+      margin-top: 10px;
     }
 
+    button:hover {
+      opacity: 0.9;
+    }
+
+    /* 🔥 EXAMPLES SECTION */
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .example-box {
+      height: 140px;
+      background: rgba(255,255,255,0.05);
+      border: 1px dashed rgba(255,255,255,0.3);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 14px;
+      overflow: hidden;
+    }
+
+    /* LOGIN */
     #loginBox {
       display: none;
       position: fixed;
@@ -103,53 +129,49 @@
       background: rgba(0,0,0,0.9);
       align-items: center;
       justify-content: center;
-      padding: 20px;
     }
 
     #loginInner {
+      width: 300px;
       background: #111827;
       padding: 20px;
       border-radius: 12px;
-      width: 100%;
-      max-width: 320px;
     }
 
-    #adminPanel {
-      display: none;
-    }
+    /* ADMIN PANEL */
+    #adminPanel { display: none; }
 
     .msg {
-      background: #1e293b;
       padding: 10px;
-      margin: 6px 0;
+      margin: 5px 0;
       border-radius: 8px;
+      background: #1e293b;
       word-break: break-word;
     }
 
-    /* 📱 MOBILE FIXES */
+    /* 📱 MOBILE */
     @media (max-width: 600px) {
       .title {
         font-size: 34px;
       }
 
       header {
-        padding: 90px 15px 10px; /* extra top space fixes overlap */
+        padding: 80px 15px 20px;
       }
 
       #adminBtn {
-        top: 10px;
-        right: 10px;
+        top: 8px;
+        right: 8px;
         padding: 6px 10px;
         font-size: 11px;
-        border-radius: 6px;
       }
 
-      .container {
-        padding: 10px;
+      .examples-grid {
+        grid-template-columns: 1fr;
       }
 
-      .card {
-        padding: 15px;
+      .example-box {
+        height: 160px;
       }
     }
   </style>
@@ -157,41 +179,66 @@
 
 <body>
 
-<button id="adminBtn" onclick="openLogin()">Admin Login</button>
+<button id="adminBtn" onclick="openLogin()">Admin</button>
 
 <header>
-  <div class="title"><span>InSafeHands</span></div>
+  <img src="logo.png">
+  <div>
+    <div class="title">Sps</div>
+    <div class="subtitle">Electrical • Est 1989</div>
+  </div>
 </header>
 
 <div class="container">
 
+  <!-- QUOTE -->
   <div class="card">
-    <h2>Make An Enquiry</h2>
+    <h2>Get a Quote</h2>
+
     <input id="qname" placeholder="Name">
     <input id="qemail" placeholder="Email">
     <input id="qphone" placeholder="Phone">
-    <input id="qaddress" placeholder="Town Or Address">
+    <input id="qaddress" placeholder="Full Address">
     <textarea id="qmsg" placeholder="Message"></textarea>
-    <button onclick="sendQuote()">Send Enquiry</button>
+
+    <button onclick="sendQuote()">Send Quote</button>
   </div>
 
+  <!-- CHAT -->
   <div class="card">
     <h2>Live Chat</h2>
+
     <input id="cname" placeholder="Name">
     <textarea id="cmsg" placeholder="Message"></textarea>
-    <button onclick="sendChat()">Send</button>
+
+    <button onclick="sendChat()">Send Message</button>
+  </div>
+
+  <!-- ⭐ EXAMPLES -->
+  <div class="card">
+    <h2>Examples</h2>
+
+    <div class="examples-grid">
+      <div class="example-box">Image 1</div>
+      <div class="example-box">Image 2</div>
+      <div class="example-box">Image 3</div>
+      <div class="example-box">Image 4</div>
+    </div>
   </div>
 
 </div>
 
+<!-- ADMIN -->
 <div id="adminPanel" class="container">
   <div class="card">
     <h2>Admin Panel</h2>
+
     <button onclick="loadData()">Refresh</button>
     <div id="output"></div>
   </div>
 </div>
 
+<!-- LOGIN -->
 <div id="loginBox">
   <div id="loginInner">
     <input id="user" placeholder="Username">
@@ -201,6 +248,8 @@
 </div>
 
 <script>
+
+/* LOGIN FIXED */
 function openLogin() {
   document.getElementById("loginBox").style.display = "flex";
 }
@@ -209,18 +258,18 @@ function login() {
   const user = document.getElementById("user").value;
   const pass = document.getElementById("pass").value;
 
-  if (user === "Cat" && pass === "Admin") {
+  if (user === "paul" && pass === "admin") {
     document.getElementById("loginBox").style.display = "none";
     document.getElementById("adminPanel").style.display = "block";
     loadData();
   } else {
-    alert("Invalid login");
+    alert("Wrong login");
   }
 }
 
 /* QUOTE */
 async function sendQuote() {
-  const res = await fetch("/send-quote", {
+  await fetch("/send-quote", {
     method: "POST",
     headers: {"Content-Type":"application/json"},
     body: JSON.stringify({
@@ -232,15 +281,12 @@ async function sendQuote() {
     })
   });
 
-  const data = await res.json();
-
-  if (data.success) alert("Quote sent ✔");
-  else alert("ERROR: " + data.error);
+  alert("Quote sent ✔");
 }
 
 /* CHAT */
 async function sendChat() {
-  const res = await fetch("/send-message", {
+  await fetch("/send-message", {
     method: "POST",
     headers: {"Content-Type":"application/json"},
     body: JSON.stringify({
@@ -249,10 +295,7 @@ async function sendChat() {
     })
   });
 
-  const data = await res.json();
-
-  if (data.success) alert("Message sent ✔");
-  else alert("Failed to send");
+  alert("Message sent ✔");
 }
 
 /* ADMIN */
@@ -285,6 +328,7 @@ async function loadData() {
 
   document.getElementById("output").innerHTML = html;
 }
+
 </script>
 
 </body>
