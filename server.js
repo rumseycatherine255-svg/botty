@@ -5,12 +5,10 @@ const { Resend } = require("resend");
 
 const app = express();
 
-// middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// email service
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // homepage
@@ -22,14 +20,14 @@ app.get("/", (req, res) => {
 app.post("/send-enquiry", async (req, res) => {
   const { name, email, phone, message } = req.body;
 
-  console.log("📩 ENQUIRY RECEIVED:", req.body);
+  console.log("📩 Incoming enquiry:", req.body);
 
   if (!name || !email || !phone || !message) {
     return res.json({ success: false, error: "Missing fields" });
   }
 
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from: "InSafeHands <onboarding@resend.dev>",
       to: process.env.EMAIL,
       subject: "New Cleaning Enquiry",
@@ -42,15 +40,21 @@ app.post("/send-enquiry", async (req, res) => {
       `
     });
 
+    console.log("📧 RESEND RESPONSE:", result);
+
     return res.json({ success: true });
 
   } catch (err) {
-    console.log("❌ EMAIL ERROR:", err);
-    return res.json({ success: false, error: err.message });
+    console.log("❌ EMAIL ERROR FULL:");
+    console.log(err);
+
+    return res.json({
+      success: false,
+      error: err.message
+    });
   }
 });
 
-// railway port
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, "0.0.0.0", () => {
