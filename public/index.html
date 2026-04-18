@@ -1,24 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>InSafeHands Cleaning Services</title>
+  <title>InSafeHands Sussex</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       margin: 0;
       font-family: Arial;
-      background: #0b1220;
       color: white;
+      background: radial-gradient(circle at top left, #1e3a8a, #020617);
+    }
+
+    #adminBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #facc15, #f59e0b);
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      color: black;
     }
 
     header {
-      padding: 60px 20px;
-      text-align: center;
-      background: linear-gradient(135deg, #0ea5e9, #1e3a8a);
+      padding: 80px 60px 40px;
     }
 
-    h1 { font-size: 40px; margin-bottom: 10px; }
+    .title {
+      font-size: 64px;
+      font-weight: bold;
+    }
+
+    .title span {
+      color: #22d3ee;
+    }
+
+    .subtitle {
+      margin-top: 10px;
+      font-size: 20px;
+      color: #ccc;
+    }
 
     .container {
       max-width: 900px;
@@ -27,104 +51,195 @@
     }
 
     .card {
-      background: #111827;
-      padding: 20px;
-      margin: 20px 0;
-      border-radius: 12px;
-    }
-
-    .services {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 15px;
-    }
-
-    .service {
-      background: #1f2937;
-      padding: 15px;
-      border-radius: 10px;
-      text-align: center;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(15px);
+      border-radius: 16px;
+      padding: 30px;
+      margin: 25px 0;
+      box-shadow: 0 0 40px rgba(0,0,0,0.4);
     }
 
     input, textarea {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       margin: 10px 0;
-      border: none;
-      border-radius: 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: transparent;
+      color: white;
     }
 
     button {
-      background: #0ea5e9;
+      display: block;
+      margin: 20px auto 0;
+      padding: 12px 30px;
+      border-radius: 10px;
       border: none;
-      padding: 12px;
-      width: 100%;
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
       color: white;
+      font-weight: bold;
       cursor: pointer;
-      border-radius: 8px;
-      font-size: 16px;
     }
 
-    button:hover {
-      background: #0284c7;
+    #loginBox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+    }
+
+    #loginInner {
+      background: #111827;
+      padding: 25px;
+      border-radius: 12px;
+      width: 300px;
+    }
+
+    #adminPanel { display: none; }
+
+    .msg {
+      background: #1e293b;
+      padding: 10px;
+      margin: 6px 0;
+      border-radius: 8px;
     }
   </style>
 </head>
 
 <body>
 
+<button id="adminBtn" onclick="openLogin()">Admin Login</button>
+
 <header>
-  <h1>InSafeHands Sussex</h1>
-  <p>Cleaning Services</p>
+  <div class="title"><span>Sps</span> InSafeHands</div>
+  <div class="subtitle">West Sussex • Est 2026</div>
 </header>
 
 <div class="container">
 
   <div class="card">
-    <h2>Our Services</h2>
-    <div class="services">
-      <div class="service">🏠 House Cleaning</div>
-    </div>
+    <h2>Get a Quote</h2>
+    <input id="qname" placeholder="Name">
+    <input id="qemail" placeholder="Email">
+    <input id="qphone" placeholder="Phone">
+    <input id="qaddress" placeholder="Town Or Address">
+    <textarea id="qmsg" placeholder="Message"></textarea>
+    <button onclick="sendQuote()">Send Quote</button>
   </div>
 
   <div class="card">
-    <h2>Request a Quote</h2>
-
-    <input id="name" placeholder="Full Name">
-    <input id="email" placeholder="Email">
-    <input id="phone" placeholder="Phone Number">
-    <textarea id="message" placeholder="What do you need cleaned?"></textarea>
-
-    <button onclick="send()">Send Enquiry</button>
-
-    <p id="status"></p>
+    <h2>Live Chat</h2>
+    <input id="cname" placeholder="Name">
+    <textarea id="cmsg" placeholder="Message"></textarea>
+    <button onclick="sendChat()">Send</button>
   </div>
 
 </div>
 
+<div id="adminPanel" class="container">
+  <div class="card">
+    <h2>Admin Panel</h2>
+    <button onclick="loadData()">Refresh</button>
+    <div id="output"></div>
+  </div>
+</div>
+
+<div id="loginBox">
+  <div id="loginInner">
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+</div>
+
 <script>
-async function send() {
-  try {
-    const res = await fetch('/send-enquiry', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        message: document.getElementById('message').value
-      })
-    });
 
-    const data = await res.json();
+function openLogin() {
+  loginBox.style.display = "flex";
+}
 
-    document.getElementById('status').innerText =
-      data.success ? "✅ Enquiry sent!" : "❌ Failed: " + data.error;
-
-  } catch (err) {
-    document.getElementById('status').innerText = "❌ Server error";
+function login() {
+  if (user.value === "Cat" && pass.value === "Admin") {
+    loginBox.style.display = "none";
+    adminPanel.style.display = "block";
+    loadData();
   }
 }
+
+/* QUOTE WITH ERROR DISPLAY */
+async function sendQuote() {
+  const res = await fetch("/send-quote", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+      name: qname.value,
+      email: qemail.value,
+      phone: qphone.value,
+      address: qaddress.value,
+      message: qmsg.value
+    })
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    alert("Quote sent ✔");
+  } else {
+    alert("ERROR: " + data.error);
+  }
+}
+
+/* CHAT */
+async function sendChat() {
+  const res = await fetch("/send-message", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+      name: cname.value,
+      message: cmsg.value
+    })
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    alert("Message sent ✔");
+  }
+}
+
+/* ADMIN */
+async function loadData() {
+  const res = await fetch("/data");
+  const data = await res.json();
+
+  let html = "<h3>Chats</h3>";
+
+  for (let user in data.chats) {
+    html += `<h4>${user}</h4>`;
+    data.chats[user].forEach(m => {
+      html += `<div class="msg"><b>${m.sender}:</b> ${m.message}</div>`;
+    });
+  }
+
+  html += "<h3>Quotes</h3>";
+
+  data.quotes.forEach(q => {
+    html += `
+      <div class="msg">
+        <b>${q.name}</b><br>
+        ${q.email}<br>
+        ${q.phone}<br>
+        ${q.address}<br>
+        ${q.message}
+      </div>
+    `;
+  });
+
+  output.innerHTML = html;
+}
+
 </script>
 
 </body>
