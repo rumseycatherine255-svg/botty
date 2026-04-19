@@ -1,291 +1,473 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>InSafeHands Sussex</title>
+  <title>InSafeHands Sussex | Professional Cleaning Services</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      color: white;
-      background: radial-gradient(circle at top left, #1e3a8a, #020617);
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --blue: #1e3a8a;
+      --blue-mid: #2563eb;
+      --blue-light: #eff6ff;
+      --teal: #22d3ee;
+      --teal-dark: #0891b2;
+      --white: #fff;
+      --grey-light: #f8fafc;
+      --grey-mid: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+      --sans: 'Open Sans', Arial, sans-serif;
     }
+    body { font-family: var(--sans); background: var(--white); color: var(--text); }
 
-    #adminBtn {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      background: linear-gradient(135deg, #facc15, #f59e0b);
-      border: none;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      color: black;
-      font-size: 14px;
-    }
+    /* TOP BAR */
+    .top-bar { background: var(--blue); color: #cbd5e1; font-size: 0.82rem; padding: 0.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.4rem; }
+    .top-bar a { color: #cbd5e1; text-decoration: none; }
+    .top-bar a:hover { color: var(--teal); }
+    .top-bar-left { display: flex; gap: 1.5rem; flex-wrap: wrap; }
 
-    header {
-      padding: 60px 20px 20px;
-      text-align: center;
-    }
+    /* HEADER */
+    header { background: var(--white); border-bottom: 1px solid var(--grey-mid); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .logo-area { display: flex; align-items: center; gap: 16px; }
+    .logo-placeholder { width: 72px; height: 72px; background: var(--grey-light); border: 2px dashed var(--grey-mid); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: var(--muted); text-align: center; line-height: 1.3; padding: 4px; flex-shrink: 0; }
+    .logo-text .name { font-size: 1.7rem; font-weight: 700; color: var(--blue); line-height: 1.1; }
+    .logo-text .sub { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+    .header-right { text-align: right; }
+    .header-right .label { font-size: 0.78rem; color: var(--muted); }
+    .header-right .number { font-size: 1.4rem; font-weight: 700; color: var(--blue); }
 
-    .title {
-      font-size: 48px;
-      font-weight: bold;
-      word-break: break-word;
-    }
+    /* NAV */
+    nav { background: var(--blue); display: flex; flex-wrap: wrap; }
+    nav a { color: #cbd5e1; text-decoration: none; font-size: 0.84rem; font-weight: 600; padding: 0.85rem 1.2rem; display: block; transition: background .15s; border-right: 1px solid rgba(255,255,255,0.08); text-transform: uppercase; letter-spacing: 0.04em; }
+    nav a:hover, nav a.active { background: var(--blue-mid); color: white; }
+    .nav-cta { margin-left: auto; background: var(--teal) !important; color: #0f172a !important; font-weight: 700 !important; border-right: none !important; }
+    .nav-cta:hover { background: #06b6d4 !important; }
 
-    .title span {
-      color: #22d3ee;
-    }
+    /* ADMIN BTN */
+    #adminBtn { position: fixed; bottom: 16px; right: 16px; background: linear-gradient(135deg, #facc15, #f59e0b); border: none; padding: 10px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; color: black; font-size: 13px; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.25); }
 
-    .subtitle {
-      margin-top: 10px;
-      font-size: 16px;
-      color: #ccc;
-    }
+    /* HERO */
+    .hero { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #1d4ed8 100%); padding: 5rem 2rem; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); pointer-events: none; }
+    .hero-inner { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+    .hero h1 { font-size: clamp(1.8rem, 4vw, 2.9rem); font-weight: 700; color: white; line-height: 1.2; margin-bottom: 1rem; }
+    .hero h1 span { color: var(--teal); }
+    .hero p { color: #bfdbfe; font-size: 1rem; line-height: 1.7; margin-bottom: 2.2rem; max-width: 580px; margin-left: auto; margin-right: auto; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-teal { background: var(--teal); color: #0f172a; padding: 0.85rem 2rem; border-radius: 5px; font-size: 0.95rem; font-weight: 700; text-decoration: none; border: none; cursor: pointer; font-family: var(--sans); transition: background .2s; display: inline-block; }
+    .btn-teal:hover { background: #06b6d4; }
+    .btn-outline-white { background: transparent; color: white; padding: 0.85rem 2rem; border-radius: 5px; font-size: 0.95rem; font-weight: 700; text-decoration: none; border: 2px solid rgba(255,255,255,0.4); cursor: pointer; font-family: var(--sans); transition: all .2s; }
+    .btn-outline-white:hover { background: rgba(255,255,255,0.1); border-color: white; }
 
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 15px;
-    }
+    /* TRUST BAR */
+    .trust-bar { background: var(--teal-dark); display: flex; justify-content: center; flex-wrap: wrap; }
+    .trust-item { color: white; font-size: 0.8rem; font-weight: 600; padding: 0.85rem 1.8rem; border-right: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; gap: 7px; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+    .trust-item:last-child { border-right: none; }
+    .trust-item .tick { font-size: 1rem; }
 
-    .card {
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(15px);
-      border-radius: 16px;
-      padding: 20px;
-      margin: 20px 0;
-      box-shadow: 0 0 40px rgba(0,0,0,0.4);
-    }
+    /* SECTIONS */
+    section { padding: 3.5rem 2rem; }
+    .section-inner { max-width: 1060px; margin: 0 auto; }
+    .section-heading { font-size: 1.7rem; font-weight: 700; color: var(--blue); margin-bottom: 0.4rem; }
+    .section-underline { width: 48px; height: 3px; background: var(--teal); margin-bottom: 1.4rem; border-radius: 2px; }
+    .section-sub { color: var(--muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 2.2rem; max-width: 680px; }
+    .section-center { text-align: center; }
+    .section-center .section-underline { margin-left: auto; margin-right: auto; }
+    .section-center .section-sub { margin-left: auto; margin-right: auto; }
 
-    input, textarea {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: transparent;
-      color: white;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
+    /* SERVICES */
+    .services-bg { background: var(--grey-light); }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.2rem; }
+    .service-card { background: white; border: 1px solid var(--grey-mid); border-top: 3px solid var(--blue-mid); border-radius: 6px; padding: 1.6rem; transition: box-shadow .2s, transform .2s; }
+    .service-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.08); transform: translateY(-3px); }
+    .svc-icon { width: 48px; height: 48px; background: var(--blue-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem; }
+    .service-card h3 { font-size: 1rem; font-weight: 700; color: var(--blue); margin-bottom: 0.4rem; }
+    .service-card p { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
 
-    textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
+    /* WHY US */
+    .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    .why-text p { font-size: 0.93rem; color: var(--muted); line-height: 1.8; margin-bottom: 1rem; }
+    .why-list { list-style: none; margin: 1rem 0; }
+    .why-list li { font-size: 0.9rem; color: var(--text); padding: 0.5rem 0; border-bottom: 1px solid var(--grey-mid); display: flex; align-items: flex-start; gap: 10px; line-height: 1.4; }
+    .why-list li::before { content: '✔'; color: var(--teal-dark); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .why-callout { background: var(--blue); border-radius: 6px; padding: 2rem; color: white; }
+    .why-callout h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; color: white; }
+    .why-callout p { font-size: 0.88rem; color: #bfdbfe; line-height: 1.7; margin-bottom: 0.75rem; }
+    .why-callout .big-num { font-size: 1.5rem; font-weight: 700; color: var(--teal); }
 
-    button {
-      display: block;
-      margin: 15px auto 0;
-      padding: 12px 20px;
-      border-radius: 10px;
-      border: none;
-      background: linear-gradient(135deg, #38bdf8, #0284c7);
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 16px;
-      width: 100%;
-      max-width: 250px;
-    }
+    /* REVIEWS */
+    .reviews-bg { background: var(--grey-light); }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
+    .review-card { background: white; border: 1px solid var(--grey-mid); border-radius: 6px; padding: 1.5rem; }
+    .stars { color: #f59e0b; font-size: 1.1rem; margin-bottom: 0.6rem; }
+    .review-text { font-size: 0.88rem; color: var(--muted); line-height: 1.6; font-style: italic; margin-bottom: 0.75rem; min-height: 60px; }
+    .review-name { font-size: 0.82rem; font-weight: 700; color: var(--blue); }
+    .review-empty { color: #c0c0c0; font-size: 0.82rem; font-style: italic; }
 
-    #loginBox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
+    /* CONTACT FORMS */
+    .forms-bg { background: var(--blue); }
+    .forms-bg .section-heading { color: white; }
+    .forms-bg .section-sub { color: #bfdbfe; }
+    .forms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .form-panel { background: white; border-radius: 8px; padding: 1.8rem; }
+    .form-panel h3 { font-size: 1.05rem; font-weight: 700; color: var(--blue); margin-bottom: 1.2rem; padding-bottom: 0.75rem; border-bottom: 2px solid var(--teal); }
+    .field { margin-bottom: 0.9rem; }
+    .field label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--muted); margin-bottom: 0.3rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    .field input, .field textarea { width: 100%; padding: 0.7rem 0.9rem; border: 1px solid #cbd5e1; border-radius: 5px; font-family: var(--sans); font-size: 0.88rem; color: var(--text); background: var(--grey-light); outline: none; transition: border .15s; }
+    .field input:focus, .field textarea:focus { border-color: var(--blue-mid); background: white; }
+    .field textarea { min-height: 90px; resize: vertical; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .submit-btn { width: 100%; padding: 0.85rem; background: var(--blue); color: white; border: none; border-radius: 5px; font-size: 0.9rem; font-weight: 700; cursor: pointer; font-family: var(--sans); transition: background .2s; margin-top: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .submit-btn:hover { background: var(--blue-mid); }
 
-    #loginInner {
-      background: #111827;
-      padding: 20px;
-      border-radius: 12px;
-      width: 100%;
-      max-width: 320px;
-    }
+    /* CHAT BOX */
+    #chatBox { background: var(--grey-light); border: 1px solid var(--grey-mid); border-radius: 5px; padding: 0.75rem; max-height: 140px; overflow-y: auto; margin-bottom: 0.75rem; min-height: 44px; font-size: 0.85rem; }
+    .msg { padding: 6px 10px; margin: 3px 0; border-radius: 4px; background: #e2e8f0; color: var(--text); }
 
-    #adminPanel {
-      display: none;
-    }
+    /* FOOTER */
+    footer { background: #0f172a; color: #94a3b8; padding: 2.5rem 2rem 1.5rem; }
+    .footer-inner { max-width: 1060px; margin: 0 auto; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+    .footer-col h4 { font-size: 0.85rem; font-weight: 700; color: white; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.9rem; }
+    .footer-col p { font-size: 0.82rem; line-height: 1.7; }
+    .footer-col a { color: #94a3b8; text-decoration: none; display: block; font-size: 0.82rem; margin-bottom: 0.35rem; }
+    .footer-col a:hover { color: var(--teal); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 1.2rem; font-size: 0.78rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
 
-    .msg {
-      background: #1e293b;
-      padding: 10px;
-      margin: 6px 0;
-      border-radius: 8px;
-      word-break: break-word;
-    }
+    /* ADMIN */
+    #adminPanel { display: none; background: #fefce8; border-top: 3px solid #f59e0b; }
+    #adminPanel .inner { max-width: 960px; margin: 0 auto; padding: 2rem; }
+    #adminPanel h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; }
+    #output { background: white; border: 1px solid #ccc; border-radius: 5px; padding: 1rem; font-size: 0.82rem; color: #444; min-height: 60px; margin-top: 0.75rem; white-space: pre-wrap; }
+    .refresh-btn { background: var(--blue); color: white; border: none; padding: 0.6rem 1.4rem; border-radius: 5px; font-size: 0.85rem; font-weight: 700; cursor: pointer; font-family: var(--sans); }
 
-    @media (max-width: 600px) {
-      .title {
-        font-size: 34px;
-      }
+    /* LOGIN */
+    #loginBox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 2000; }
+    .login-card { background: white; border-top: 3px solid var(--blue); border-radius: 8px; padding: 2rem; width: 320px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+    .login-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--blue); margin-bottom: 1.2rem; }
+    .cancel-btn { width: 100%; padding: 0.65rem; background: white; color: var(--muted); border: 1px solid var(--grey-mid); border-radius: 5px; font-size: 0.85rem; cursor: pointer; font-family: var(--sans); margin-top: 0.5rem; }
 
-      header {
-        padding: 50px 15px 10px;
-      }
-
-      .container {
-        padding: 10px;
-      }
-
-      .card {
-        padding: 15px;
-      }
-
-      #adminBtn {
-        font-size: 12px;
-        padding: 8px 12px;
-      }
+    @media (max-width: 700px) {
+      .why-grid, .forms-grid, .footer-grid { grid-template-columns: 1fr; }
+      nav a { font-size: 0.75rem; padding: 0.7rem 0.8rem; }
+      .nav-cta { margin-left: 0; }
+      .trust-item { padding: 0.7rem 1rem; font-size: 0.72rem; }
     }
   </style>
 </head>
-
 <body>
 
-<button id="adminBtn" onclick="openLogin()">Admin Login</button>
+<button id="adminBtn" onclick="openLogin()">🔐 Admin</button>
 
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-bar-left">
+    <a href="tel:01234567890">📞 01234 567890</a>
+    <a href="mailto:info@insafehands-sussex.co.uk">✉ info@insafehands-sussex.co.uk</a>
+  </div>
+  <div>Mon – Sat: 8:00am – 6:00pm</div>
+</div>
+
+<!-- HEADER -->
 <header>
-  <div class="title"><span>InSafeHands</span></div>
+  <div class="logo-area">
+    <div class="logo-placeholder">Your<br>Logo<br>Here</div>
+    <div class="logo-text">
+      <div class="name">InSafeHands</div>
+      <div class="sub">Professional Cleaning Services · Sussex</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="label">Call us today for a free quote</div>
+    <div class="number">01234 567890</div>
+  </div>
 </header>
 
-<div class="container">
+<!-- NAV -->
+<nav>
+  <a href="#" class="active">Home</a>
+  <a href="#services">Services</a>
+  <a href="#about">About Us</a>
+  <a href="#reviews">Reviews</a>
+  <a href="#contact">Contact</a>
+  <a href="#contact" class="nav-cta">Get a Free Quote</a>
+</nav>
 
-  <div class="card">
-    <h2>Make An Enquiry</h2>
-    <input id="qname" placeholder="Name">
-    <input id="qemail" placeholder="Email">
-    <input id="qphone" placeholder="Phone">
-    <input id="qaddress" placeholder="Town Or Address">
-    <textarea id="qmsg" placeholder="Message"></textarea>
-    <button onclick="sendQuote()">Send Enquiry</button>
-  </div>
-
-  <div class="card">
-    <h2>Live Chat</h2>
-    <input id="cname" placeholder="Name">
-    <textarea id="cmsg" placeholder="Message"></textarea>
-    <button onclick="sendChat()">Send</button>
-  </div>
-
-</div>
-
-<div id="adminPanel" class="container">
-  <div class="card">
-    <h2>Admin Panel</h2>
-    <button onclick="loadData()">Refresh</button>
-    <div id="output"></div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Professional Cleaning Services<br>Across <span>Sussex</span></h1>
+    <p>Reliable, thorough and fully insured cleaning for homes and businesses throughout Sussex. Trusted by hundreds of customers — let us take care of the cleaning so you don't have to.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-teal">Get a Free Quote</a>
+      <a href="#services" class="btn-outline-white">Our Services</a>
+    </div>
   </div>
 </div>
 
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><span class="tick">✔</span> Fully Insured</div>
+  <div class="trust-item"><span class="tick">✔</span> Vetted Staff</div>
+  <div class="trust-item"><span class="tick">✔</span> Free Quotes</div>
+  <div class="trust-item"><span class="tick">✔</span> Domestic &amp; Commercial</div>
+  <div class="trust-item"><span class="tick">✔</span> All Work Guaranteed</div>
+  <div class="trust-item"><span class="tick">✔</span> 5★ Reviews</div>
+</div>
+
+<!-- SERVICES -->
+<section class="services-bg" id="services">
+  <div class="section-inner">
+    <div class="section-center">
+      <h2 class="section-heading">Our Services</h2>
+      <div class="section-underline"></div>
+      <p class="section-sub">We offer a wide range of professional cleaning services for homes, offices and commercial properties across Sussex. Every job is carried out to the highest standard.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="svc-icon">🏠</div>
+        <h3>Domestic Cleaning</h3>
+        <p>Regular and one-off home cleaning, tailored to your schedule. The same cleaner every visit for continuity.</p>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">🏢</div>
+        <h3>Commercial &amp; Office</h3>
+        <p>Reliable office and commercial cleaning on flexible contracts. Daily, weekly or monthly — we work around you.</p>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">✨</div>
+        <h3>Deep Cleaning</h3>
+        <p>Thorough, top-to-bottom deep cleans for homes and businesses. Perfect for moving in/out or a spring refresh.</p>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">🔑</div>
+        <h3>End of Tenancy</h3>
+        <p>Comprehensive end-of-tenancy cleans to help landlords and tenants get their deposit back. Fully guaranteed.</p>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">🏗️</div>
+        <h3>After Builders Clean</h3>
+        <p>Post-construction and renovation cleans to remove dust, debris and residue and leave your property spotless.</p>
+      </div>
+      <div class="service-card">
+        <div class="svc-icon">🏡</div>
+        <h3>Holiday Let Cleaning</h3>
+        <p>Fast, reliable turnaround cleans for holiday lets, Airbnbs and rental properties between guests.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="about">
+  <div class="section-inner">
+    <div class="why-grid">
+      <div class="why-text">
+        <h2 class="section-heading">Why Choose InSafeHands?</h2>
+        <div class="section-underline"></div>
+        <p>At InSafeHands Sussex, we believe your home and workplace deserve the very best care. Our experienced, fully vetted team take real pride in their work — arriving on time, using quality products and leaving every space spotless.</p>
+        <p>We're not just cleaners — we're a trusted part of our customers' lives. Many of our clients have been with us for years, and that loyalty means everything to us.</p>
+        <ul class="why-list">
+          <li>All staff fully vetted, referenced and DBS checked</li>
+          <li>Fully insured — public and employer liability</li>
+          <li>Same cleaner every visit — no strangers in your home</li>
+          <li>Eco-friendly products available on request</li>
+          <li>Flexible scheduling to suit you</li>
+          <li>No hidden charges — honest, upfront pricing</li>
+          <li>100% satisfaction guarantee on every clean</li>
+        </ul>
+      </div>
+      <div>
+        <div class="why-callout">
+          <h3>Ready to book?</h3>
+          <p>Get in touch today for a free, no-obligation quote. We cover all areas across Sussex and are happy to discuss your exact requirements.</p>
+          <div class="big-num">01234 567890</div>
+          <p style="margin-top:4px;font-size:0.8rem">Mon – Sat: 8:00am – 6:00pm</p>
+          <a href="#contact" class="btn-teal" style="margin-top:1.2rem;display:inline-block;font-size:0.85rem">Request a Quote Online</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews-bg" id="reviews">
+  <div class="section-inner">
+    <div class="section-center">
+      <h2 class="section-heading">What Our Customers Say</h2>
+      <div class="section-underline"></div>
+      <p class="section-sub">We let our work speak for itself. Here's what some of our happy customers have to say.</p>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <div class="review-text review-empty">Review coming soon...</div>
+        <div class="review-name">— Customer, Sussex</div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <div class="review-text review-empty">Review coming soon...</div>
+        <div class="review-name">— Customer, Sussex</div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <div class="review-text review-empty">Review coming soon...</div>
+        <div class="review-name">— Customer, Sussex</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT FORMS -->
+<section class="forms-bg" id="contact">
+  <div class="section-inner">
+    <div class="section-center" style="margin-bottom:2rem">
+      <h2 class="section-heading">Get in Touch</h2>
+      <div class="section-underline" style="margin-left:auto;margin-right:auto"></div>
+      <p class="section-sub" style="color:#bfdbfe">Fill in the form below for a free quote, or send us a message via live chat. We aim to respond within a few hours.</p>
+    </div>
+    <div class="forms-grid">
+      <div class="form-panel">
+        <h3>📋 Make an Enquiry</h3>
+        <div class="field-row">
+          <div class="field"><label>Name</label><input id="qname" placeholder="Your name"></div>
+          <div class="field"><label>Phone</label><input id="qphone" placeholder="Your phone"></div>
+        </div>
+        <div class="field"><label>Email</label><input id="qemail" type="email" placeholder="Your email"></div>
+        <div class="field"><label>Town or Address</label><input id="qaddress" placeholder="Your town or address"></div>
+        <div class="field"><label>Message</label><textarea id="qmsg" placeholder="Tell us what you need..."></textarea></div>
+        <button class="submit-btn" onclick="sendQuote()">Send Enquiry</button>
+      </div>
+      <div class="form-panel">
+        <h3>💬 Live Chat</h3>
+        <div id="chatBox"></div>
+        <div class="field"><label>Your Name</label><input id="cname" placeholder="Your name"></div>
+        <div class="field"><label>Message</label><textarea id="cmsg" placeholder="Type your message..."></textarea></div>
+        <button class="submit-btn" onclick="sendChat()">Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>InSafeHands Sussex</h4>
+        <p>Professional cleaning services for homes and businesses across Sussex. Fully insured, vetted staff, and a 100% satisfaction guarantee on every clean.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="#services">Domestic Cleaning</a>
+        <a href="#services">Commercial &amp; Office</a>
+        <a href="#services">Deep Cleaning</a>
+        <a href="#services">End of Tenancy</a>
+        <a href="#services">After Builders</a>
+        <a href="#services">Holiday Let Cleaning</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="tel:01234567890">📞 01234 567890</a>
+        <a href="mailto:info@insafehands-sussex.co.uk">✉ info@insafehands-sussex.co.uk</a>
+        <p style="margin-top:0.5rem">Mon – Sat: 8:00am – 6:00pm</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 InSafeHands Sussex. All rights reserved.</span>
+      <span>Fully Insured · Vetted Staff · All Work Guaranteed</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <div class="inner">
+    <h2>🔐 Admin Panel</h2>
+    <button class="refresh-btn" onclick="loadData()">Refresh Data</button>
+    <div id="output">No data loaded yet.</div>
+  </div>
+</div>
+
+<!-- LOGIN -->
 <div id="loginBox">
-  <div id="loginInner">
-    <input id="user" placeholder="Username">
-    <input id="pass" type="password" placeholder="Password">
-    <button onclick="login()">Login</button>
+  <div class="login-card">
+    <h3>Admin Login</h3>
+    <div class="field"><label>Username</label><input id="user" placeholder="Username"></div>
+    <div class="field"><label>Password</label><input id="pass" type="password" placeholder="Password"></div>
+    <button class="submit-btn" onclick="login()">Login</button>
+    <button class="cancel-btn" onclick="document.getElementById('loginBox').style.display='none'">Cancel</button>
   </div>
 </div>
 
 <script>
-function openLogin() {
-  document.getElementById("loginBox").style.display = "flex";
-}
+  function openLogin() { document.getElementById('loginBox').style.display = 'flex'; }
 
-function login() {
-  const user = document.getElementById("user").value;
-  const pass = document.getElementById("pass").value;
-
-  if (user === "Cat" && pass === "Admin") {
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("adminPanel").style.display = "block";
-    loadData();
-  } else {
-    alert("Invalid login");
+  function login() {
+    const user = document.getElementById('user').value;
+    const pass = document.getElementById('pass').value;
+    if (user === 'Cat' && pass === 'Admin') {
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+      document.getElementById('adminPanel').scrollIntoView({ behavior: 'smooth' });
+      loadData();
+    } else {
+      alert('Invalid login');
+    }
   }
-}
 
-/* QUOTE */
-async function sendQuote() {
-  const res = await fetch("/send-quote", {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({
-      name: document.getElementById("qname").value,
-      email: document.getElementById("qemail").value,
-      phone: document.getElementById("qphone").value,
-      address: document.getElementById("qaddress").value,
-      message: document.getElementById("qmsg").value
-    })
-  });
-
-  const data = await res.json();
-
-  if (data.success) {
-    alert("Quote sent ✔");
-  } else {
-    alert("ERROR: " + data.error);
-  }
-}
-
-/* CHAT */
-async function sendChat() {
-  const res = await fetch("/send-message", {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({
-      name: document.getElementById("cname").value,
-      message: document.getElementById("cmsg").value
-    })
-  });
-
-  const data = await res.json();
-
-  if (data.success) {
-    alert("Message sent ✔");
-  } else {
-    alert("Failed to send");
-  }
-}
-
-/* ADMIN DATA */
-async function loadData() {
-  const res = await fetch("/data");
-  const data = await res.json();
-
-  let html = "<h3>Chats</h3>";
-
-  for (let user in data.chats) {
-    html += `<h4>${user}</h4>`;
-    data.chats[user].forEach(m => {
-      html += `<div class="msg"><b>${m.sender}:</b> ${m.message}</div>`;
+  async function sendQuote() {
+    const res = await fetch('/send-quote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: document.getElementById('qname').value,
+        email: document.getElementById('qemail').value,
+        phone: document.getElementById('qphone').value,
+        address: document.getElementById('qaddress').value,
+        message: document.getElementById('qmsg').value
+      })
     });
+    const data = await res.json();
+    if (data.success) { alert('Enquiry sent ✔ We\'ll be in touch soon!'); }
+    else { alert('ERROR: ' + data.error); }
   }
 
-  html += "<h3>Quotes</h3>";
+  async function sendChat() {
+    const name = document.getElementById('cname').value;
+    const message = document.getElementById('cmsg').value;
+    if (!name || !message) return;
+    const div = document.createElement('div');
+    div.className = 'msg';
+    div.textContent = name + ': ' + message;
+    document.getElementById('chatBox').appendChild(div);
+    const res = await fetch('/send-message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, message })
+    });
+    const data = await res.json();
+    if (!data.success) { alert('Failed to send'); }
+    document.getElementById('cmsg').value = '';
+  }
 
-  data.quotes.forEach(q => {
-    html += `
-      <div class="msg">
-        <b>${q.name}</b><br>
-        ${q.email}<br>
-        ${q.phone}<br>
-        ${q.address}<br>
-        ${q.message}
-      </div>
-    `;
-  });
-
-  document.getElementById("output").innerHTML = html;
-}
+  async function loadData() {
+    const res = await fetch('/data');
+    const data = await res.json();
+    let html = '<h3 style="margin-bottom:0.5rem">Chats</h3>';
+    for (let user in data.chats) {
+      html += `<strong>${user}</strong>`;
+      data.chats[user].forEach(m => {
+        html += `<div class="msg" style="margin:3px 0"><b>${m.sender}:</b> ${m.message}</div>`;
+      });
+    }
+    html += '<h3 style="margin:1rem 0 0.5rem">Quotes</h3>';
+    data.quotes.forEach(q => {
+      html += `<div class="msg" style="margin:4px 0"><b>${q.name}</b> · ${q.email} · ${q.phone}<br>${q.address}<br>${q.message}</div>`;
+    });
+    document.getElementById('output').innerHTML = html;
+  }
 </script>
-
 </body>
 </html>
